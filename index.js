@@ -11,29 +11,28 @@ const startBtnRef = document.querySelector('button[data-action="start"]');
 const stopBtnRef = document.querySelector('button[data-action="stop"]');
 const bodyRef = document.querySelector('body');
 
+startBtnRef.addEventListener('click', startSwitch);
+stopBtnRef.addEventListener('click', stopSwitch);
+
 let timerId = null;
-let isActive = false;
+
+function startSwitch() {
+  startBtnRef.disabled = true;
+  timerId = setInterval(() => {
+    bgcSwitch();
+  }, 1000);
+}
+
+function stopSwitch() {
+  clearInterval(timerId);
+  startBtnRef.disabled = false;
+}
 
 const randomIntegerFromInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-const bgcSwitch = () => {
+function bgcSwitch() {
   bodyRef.style.backgroundColor =
     colors[randomIntegerFromInterval(0, colors.length - 1)];
-};
-
-startBtnRef.addEventListener('click', () => {
-  startBtnRef.disabled = true;
-  isActive = true;
-  timerId = setInterval(() => {
-    bgcSwitch();
-  }, 1000);
-});
-
-stopBtnRef.addEventListener('click', () => {
-  clearInterval(timerId);
-  isActive = false;
-  timerId = null;
-  startBtnRef.disabled = false;
-});
+}
